@@ -4,8 +4,13 @@ function frame( record )
   fileName = sprintf('1.0.0/%sm.mat', record);
   
   t = cputime();
+  
   m = 5;
-  idx = detector(fileName, m);
+  sumWindow = 10;
+  alpha = 0.05;
+  gamma = 0.15;
+  step = 180;
+  idx = detector(fileName, m, sumWindow, alpha, gamma, step);
   
   fprintf('Running time: %f\n', cputime() - t);
   

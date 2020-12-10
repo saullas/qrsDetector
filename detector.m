@@ -1,43 +1,42 @@
-function qrs = detector(filename, m)
+function qrs = detector(filename, M, sumWindow, alpha, gamma, step)
     S = load(filename);
-    x = S.val(1,1:1500);
-    sigLen = size(x, 2);
-    y = zeros(1, sigLen);
+    x = S.val(1,:);
+    xLen = size(x, 2);
     
-    plot(x)
+    y = zeros(1, xLen);
     
     % HPF Stage
-    for i=m+1:sigLen
-        y(i) = x(i-(m+1)/2) - 1/m * sum(x(i-m:i));
+    for i=M:xLen
+        if i >= M
+            y(i) = x(i-((M+1)/2)) - (1/M) * sum(x(i-(M-1):i));
+        else
+            y(i) = 0;
+        end
     end
+    
+    
     
     
     % LPF Stage
-    y_squared = y.^2;
-    
-    sumWindow = 24;
-    
-    for i=sumWindow:sigLen
-        y(i) = y(i) + sum(y_squared(i-(sumWindow-1):i));
+    for i=1:(xLen - sumWindow - 1)
+        y(i) = sum(y(i:i+sumWindow).^2);
     end
     
+    
     % Decision making stage
-    alpha = 0.05;
-    gamma = 0.17;
-    step = 180;
     threshold = max(y(1:step));
     
-    for i=1:sigLen
-        [peak, peakIndex] = max(y(1:min(i+step,sigLen)));
+    for i=1:step:(xLen - step)
+        [peak, peakIndex] = max(y(i:i+step));
         
         if peak > threshold
-            % - infinity is peak
-            y(peakIndex + 1) = - Inf;
-            threshold = alpha * gamma * peak +(1 - alpha) * threshold;
+            % nan to know where the peaks are
+            y(peakIndex + i) = nan;
+            threshold = alpha * gamma * peak + (1 - alpha) * threshold;
         end
     end
     
     
     % Find all peaks - Infinites
-    qrs = find(y == - Inf);
+    qrs = find(isnan(y));
 end
