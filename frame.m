@@ -1,7 +1,7 @@
 function frame( record )
   % Summary of this function and detailed explanation goes here
   
-  fileName = sprintf('1.0.0/%sm.mat', record);
+  fileName = sprintf('mitdb/1.0.0/%sm.mat', record);
   
   t = cputime();
   
@@ -14,7 +14,7 @@ function frame( record )
   
   fprintf('Running time: %f\n', cputime() - t);
   
-  asciName = sprintf('%s.asc',record);
+  asciName = sprintf('mitdb/1.0.0/%s.asc',record);
   fid = fopen(asciName, 'wt');
   
   for i=1:size(idx, 2)

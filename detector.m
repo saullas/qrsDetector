@@ -29,7 +29,7 @@ function qrs = detector(filename, M, sumWindow, alpha, gamma, step)
     for i=1:step:(xLen - step)
         [peak, peakIndex] = max(y(i:i+step));
         
-        if peak > threshold
+        if peak >= threshold
             % nan to know where the peaks are
             y(peakIndex + i) = nan;
             threshold = alpha * gamma * peak + (1 - alpha) * threshold;
