@@ -5,6 +5,7 @@ function qrs = detector(filename, M, sumWindow, alpha, gamma, step)
     
     y = zeros(1, xLen);
     
+    
     % HPF Stage
     for i=M:xLen
         if i >= M
@@ -13,8 +14,6 @@ function qrs = detector(filename, M, sumWindow, alpha, gamma, step)
             y(i) = 0;
         end
     end
-    
-    
     
     
     % LPF Stage
@@ -31,7 +30,7 @@ function qrs = detector(filename, M, sumWindow, alpha, gamma, step)
         
         if peak >= threshold
             % nan to know where the peaks are
-            y(peakIndex + i) = nan;
+            y(i + peakIndex) = nan;
             threshold = alpha * gamma * peak + (1 - alpha) * threshold;
         end
     end

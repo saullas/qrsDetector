@@ -1,5 +1,6 @@
 #!/bin/bash
-cd mitdb/1.0.0/
+DATABASE=$1
+cd $DATABASE/1.0.0/
 
 for file in *.asc
 do
