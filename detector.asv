@@ -5,8 +5,8 @@ function qrs = detector(filename, M, sumWindow, alpha, gamma, step)
     
     y = zeros(1, xLen);
     
-    p1 = plot(x, 'color', 'b');
-    hold on;
+    % p1 = plot(x, 'color', 'b');
+    % hold on;
     
     % HPF Stage
     for i=M:xLen
@@ -42,7 +42,7 @@ function qrs = detector(filename, M, sumWindow, alpha, gamma, step)
         end
     end
     
-    legend([p1, p2], {'original signal', 'after HPF'});
+    legend([p1, p2], {'original signal', 'after LPF'});
     hold off;
     
     % Find all peaks
